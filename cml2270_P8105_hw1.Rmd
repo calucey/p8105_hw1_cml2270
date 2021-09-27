@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+First load the tidyverse in the command line. Then, check your working directory to make sure it is correct, also in the command line.
+
+```{r load tidyverse, include=FALSE}
+library(tidyverse)
+getwd()
+```
+
+## Problem 1: Creating the dataframe
+
+First, create the random_samp variable that contains a random sample of 10 numbers from a normal distribution whose standard deviation is 0.7.
+
+Then, define variable nonzero equal to all random_samp variables greater than zero. 
+
+FINISH EXPLAINING OUT YOUR CODE
+
+```{r create dataframe}
+
+example_df = tibble(
+  vec_random = rnorm(10, sd = .7),
+  lgl_nonzero = vec_random > 0,
+  vec_char = c("Catherine" , "Kate", "Katie", "Cat", "Katherine", "Kathryn", "Catharine", "Cathy", "Kitty", "Catie"),
+  vec_factor = factor(c("best", "best", "best", "good", "good", "good", "best", "better", "best", "best")),
+  )
+print(example_df)
+```
+
+```{r taking the mean}
+mean(pull(example_df, vec_random))
+mean(pull(example_df, lgl_nonzero))
+mean(pull(example_df, vec_char))
+mean(pull(example_df, vec_factor))
+```
+
