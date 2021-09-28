@@ -3,62 +3,85 @@ title: "Catherine Lucey, P8105 Homework 1"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+## Setup
+First load the tidyverse, then check your working directory to make sure it is correct, either by doing so in the command line or using the below code chunk once.
 
-## R Markdown
-First load the tidyverse in the command line. Then, check your working directory to make sure it is correct, doing so in the command line as well.
+```{r eval = FALSE}
+library(tidyverse)
+getwd()
+```
 
 ## Problem 1: Creating the dataframe
 
-First, create the random_samp vector that contains a random sample of 10 numbers from a normal distribution whose standard deviation is 0.7.
 
-Then, define vector "nonzero" to indicate whether each random_samp variable is greater than zero. 
+### Creating a dataframe
+First, create the "random" vector that contains a random sample of 10 numbers from a normal distribution whose standard deviation is 0.7.
 
-Next, define a character vector "vec_char" listing the possible spellings and nicknames for the name Catherine.
+Then, define logical vector "positive" to indicate whether each random_samp variable is greater than zero. 
 
-Lastly, assign a factor vector with three levels, "ok", "better", and "best" to describe each Catherine variation. 
+Next, define a character vector "names" listing the possible spellings and nicknames for the name Catherine.
+
+Lastly, assign a factor vector "quality" with three levels, "ok", "better", and "best" to describe each Catherine variation.
+
+The Problem 1 dataframe (prob1_df) is then printed as a means of checking that the dataframe is built correctly.
 
 
 ```{r create dataframe}
 
-example_df = tibble(
-  vec_random = rnorm(10, sd = .7),
-  lgl_nonzero = vec_random > 0,
-  vec_char = c("Catherine" , "Kate", "Katie", "Cat", "Katherine", "Kathryn", "Catharine", "Cathy", "Kitty", "Catie"),
-  vec_factor = factor(c("best", "better", "better", "better", "ok", "ok", "ok", "ok", "better", "best")),
+prob1_df = tibble(
+  random = rnorm(10, sd = .7),
+  positive = random > 0,
+  name_types = c("Catherine" , "Kate", "Katie", "Cat", "Katherine", "Kathryn", "Catharine", "Cathy", "Kitty", "Catie"),
+  quality = factor(c("best", "better", "better", "better", "ok", "ok", "ok", "ok", "better", "ok"))
   )
-print(example_df)
+
+print(prob1_df)
 
 ```
+
+### Taking the mean of each variable
 
 ```{r taking the mean}
-mean(pull(example_df, vec_random))
-mean(pull(example_df, lgl_nonzero))
-mean(pull(example_df, vec_char))
-mean(pull(example_df, vec_factor))
-```
-```{r numerics}
-set.seed(6)
-as.numeric(example_df, vec_random)
-as.numeric(example_df, lgl_nonzero)
-as.numeric(vec_factor)
-print(as.numeric(vec_char))
+
+mean(pull(prob1_df, random))
+mean(pull(prob1_df, positive))
+mean(pull(prob1_df, name_types))
+mean(pull(prob1_df, quality))
+
 ```
 
-# Problem 2: Plotting Data
-You can make dataframes contained within the package viewable using View("df_name"); this will open the data frame in a new window. The variables and dataframes contained within the package can be viewed in the "environment" panel. 
+It is only possible to take the mean of the first two vectors, random and positive, because these are either already a numerical value ("random") or reducible to 0/1 and thus can be treated as a number (the TRUE/FALSE statements returned by the "positive" vector). The mean is returned as an NA/error for all vectors that are not numeric or logical.
 
-```{r}
+Coercing the non-numeric vectors to be numeric, via the code chunk below, shows how the true/false logical vector is converted into zeros and ones, the character vector cannot be ennumerated and returns "NA"s, and lastly the factor data is converted into an oredered set with values of 1, 2, or 3. The mean of the factor data could be taken after coercing it into a numeric, but not before.
+
+```{r numerics, eval = FALSE}
+
+as.numeric(pull(prob1_df, positive))
+as.numeric(pull(prob1_df, name_types))
+as.numeric(pull(prob1_df, quality))
+
+```
+
+## Problem 2: Plotting Data
+
+First, load the palmerpenguins package, then summarize with the skimr skim() command.
+```{r loading data}
+
 data("penguins", package = "palmerpenguins")
-skimr::skim(penguins)
+
 ```
 
+```{r analyze penguins}
+# summarize and understand what data you have
+print(skimr::skim(penguins))
+nrow(penguins)
+ncol(penguins)
 
-skimr::pull(penguins, penguins_data)
+# find mean of flipper length, pulling from full penguins df
+mean(pull(penguins, flipper_length_mm))
 
-View just gives you a sample, glimpse() gives you all of the variables
-summary() is also helpful
+```
 
-ggplot(plot_df, aes(x = x, y = y)) + geom_point()
+The palmerpenguins dataset has one main dataframe, named penguins, whose component variables include bill_length_mm, bill_depth_mm, flipper_length_mm, and body_mass_g. These are all numerical. The penguins dataframe also includes year values, sex (a factor with two levels, "female" and "male"), island, and species, both factors with three levels corresponding to three different home islands and three different species, respectively. 
+
+There are 344 rows of data, meaning there are 344 samples, with 8 columns of descriptive data for each sample. The mean flipper length is 201mm. 
