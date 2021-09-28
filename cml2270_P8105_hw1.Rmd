@@ -33,7 +33,7 @@ prob1_df = tibble(
   positive = random > 0,
   name_types = c("Catherine" , "Kate", "Katie", "Cat", "Katherine", "Kathryn", "Catharine", "Cathy", "Kitty", "Catie"),
   quality = factor(c("best", "better", "better", "better", "ok", "ok", "ok", "ok", "better", "ok"))
-  )
+)
 
 print(prob1_df)
 
@@ -62,8 +62,9 @@ as.numeric(pull(prob1_df, quality))
 
 ```
 
-## Problem 2: Plotting Data
+## Problem 2: Importing, Viewing, and Plotting Data
 
+### Importing the palmerpenguins dataset
 First, load the palmerpenguins package, then summarize with the skimr skim() command.
 ```{r loading data}
 
@@ -85,3 +86,19 @@ mean(pull(penguins, flipper_length_mm))
 The palmerpenguins dataset has one main dataframe, named penguins, whose component variables include bill_length_mm, bill_depth_mm, flipper_length_mm, and body_mass_g. These are all numerical. The penguins dataframe also includes year values, sex (a factor with two levels, "female" and "male"), island, and species, both factors with three levels corresponding to three different home islands and three different species, respectively. 
 
 There are 344 rows of data, meaning there are 344 samples, with 8 columns of descriptive data for each sample. The mean flipper length is 201mm. 
+
+### Plotting penguin flipper length and bill length
+
+Use ggplot to generate a scatterplot of flipper vs. bill length for all three species. Label the axes, indicate points should be colored according to species, and save using ggsave().
+
+```{r plotting penguins}
+
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point() + xlab("Bill Length (mm)") + ylab("Flipper Length (mm)")
+
+ggsave(
+  "penguin_scatterplot.png",
+  plot = last_plot(),
+  dpi = 300,
+)
+
+```
