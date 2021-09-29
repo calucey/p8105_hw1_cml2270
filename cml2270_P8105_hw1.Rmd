@@ -11,10 +11,10 @@ library(tidyverse)
 getwd()
 ```
 
-## Problem 1: Creating the dataframe
+## Problem 1: Creating and Describing a Dataframe
 
 
-### Creating a dataframe
+### Creating a Dataframe
 First, create the "random" vector that contains a random sample of 10 numbers from a normal distribution whose standard deviation is 0.7.
 
 Then, define logical vector "positive" to indicate whether each random_samp variable is greater than zero. 
@@ -39,7 +39,7 @@ print(prob1_df)
 
 ```
 
-### Taking the mean of each variable
+### Taking the Mean of Each Variable
 
 ```{r taking the mean}
 
@@ -50,7 +50,7 @@ mean(pull(prob1_df, quality))
 
 ```
 
-It is only possible to take the mean of the first two vectors, random and positive, because these are either already a numerical value ("random") or reducible to 0/1 and thus can be treated as a number (the TRUE/FALSE statements returned by the "positive" vector). The mean is returned as an NA/error for all vectors that are not numeric or logical.
+It is only possible to take the mean of the first two vectors, random and positive, because these are either already a numerical value ("random") or reducible to 0/1 and thus can be treated as a number (the TRUE/FALSE statements returned by the "positive" vector). The mean is returned as an NA/error for all vectors that are not already numeric or logical.
 
 Coercing the non-numeric vectors to be numeric, via the code chunk below, shows how the true/false logical vector is converted into zeros and ones, the character vector cannot be ennumerated and returns "NA"s, and lastly the factor data is converted into an oredered set with values of 1, 2, or 3. The mean of the factor data could be taken after coercing it into a numeric, but not before.
 
@@ -64,21 +64,18 @@ as.numeric(pull(prob1_df, quality))
 
 ## Problem 2: Importing, Viewing, and Plotting Data
 
-### Importing the palmerpenguins dataset
+### Importing the palmerpenguins Dataset
 First, load the palmerpenguins package, then summarize with the skimr skim() command.
-```{r loading data}
+```{r load and view data}
 
 data("penguins", package = "palmerpenguins")
 
-```
-
-```{r analyze penguins}
 # summarize and understand what data you have
 print(skimr::skim(penguins))
 nrow(penguins)
 ncol(penguins)
 
-# find mean of flipper length, pulling from full penguins df
+# find mean of flipper length, pulling from penguins dataframe
 mean(pull(penguins, flipper_length_mm))
 
 ```
@@ -87,9 +84,9 @@ The palmerpenguins dataset has one main dataframe, named penguins, whose compone
 
 There are 344 rows of data, meaning there are 344 samples, with 8 columns of descriptive data for each sample. The mean flipper length is 201mm. 
 
-### Plotting penguin flipper length and bill length
+### Plotting Penguin Flipper Length and Bill Length
 
-Use ggplot to generate a scatterplot of flipper vs. bill length for all three species. Label the axes, indicate points should be colored according to species, and save using ggsave().
+Use ggplot to generate a scatterplot of flipper vs. bill length for all three species. Label the axes, indicate that points should be colored according to species, and save using ggsave().
 
 ```{r plotting penguins}
 
